@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estudiantes del Curso</title>
+    <style>
+        /* Estilos personalizados */
+    </style>
+</head>
+<body>
+
+<h1>Estudiantes del Curso <span id="nombre-curso"></span></h1>
+<table id="estudiantes-table">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Correo</th>
+        <th>Notas</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Datos cargados dinámicamente desde el backend -->
+    </tbody>
+</table>
+
+<script>
+    function loadStudents() {
+        const params = new URLSearchParams(window.location.search);
+        const codigoCurso = params.get('curso');
+        fetch(`http://localhost:8080/api/estudiantes?curso=${codigoCurso}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('nombre-curso').textContent = data.cursoNombre;
+                const tableBody = document.getElementById('estudiantes-table').querySelector('tbody');
+                tableBody.innerHTML = '';
+                data.estudiantes.forEach(estudiante => {
+                    const row = `<tr>
+                        <td>${estudiante.nombre}</td>
+                        <td>${estudiante.apellido}</td>
+                        <td>${estudiante.correo}</td>
+                        <td><button onclick="viewGrades(${estudiante.id})">Mostrar</button></td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Error al cargar estudiantes:', error));
+    }
+
+    function viewGrades(idEstudiante) {
+        window.location.href = `notas.html?estudiante=${idEstudiante}`;
+    }
+
+    loadStudents();
+</script>
+
+</body>
+</html>

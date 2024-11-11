@@ -2,6 +2,7 @@ package edu.javeriana.taller.Model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -10,10 +11,19 @@ public class Estudiante {
 
     @Id
     private Integer id;
+
+    @Column("nombre")  // Mapea al nombre exacto de la columna en la BD, si es diferente
     private String nombre;
+
+    @Column("apellido")
     private String apellido;
+
+    @Column("correo")
     private String correo;
 
+
+
+    // Getters y setters
     public Integer getId() {
         return id;
     }

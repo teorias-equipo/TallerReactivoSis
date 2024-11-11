@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Cursos Vigentes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Lista de Cursos Vigentes</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Materia</th>
+        <th>Profesor</th>
+        <th>Código del Curso</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="curso : ${cursos}">
+        <td th:text="${curso.nombre}"></td>  <!-- Mostrar nombre del curso -->
+        <td th:text="${curso.profesorId}"></td>  <!-- Suponiendo que profesorId está relacionado -->
+        <td th:text="${curso.codigo}"></td>  <!-- Mostrar código del curso -->
+        <td><!-- Agregar botones de acciones, como editar o eliminar --></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

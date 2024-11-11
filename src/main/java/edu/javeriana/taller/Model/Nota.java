@@ -2,6 +2,7 @@ package edu.javeriana.taller.Model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -10,12 +11,23 @@ public class Nota {
 
     @Id
     private Integer id;
-    private Integer materiaId;      // Llave foránea a MATERIA
-    private Integer profesorId;     // Llave foránea a PROFESOR
-    private String cursoCodigo;     // Llave foránea a CURSO
-    private Integer estudianteId;   // Llave foránea a ESTUDIANTE
+
+    @Column("materia_id")      // Llave foránea a MATERIA
+    private Integer materiaId;
+
+    @Column("profesor_id")     // Llave foránea a PROFESOR
+    private Integer profesorId;
+
+    @Column("curso_codigo")    // Llave foránea a CURSO
+    private String cursoCodigo;
+
+    @Column("estudiante_id")   // Llave foránea a ESTUDIANTE
+    private Integer estudianteId;
+
     private String observacion;
+
     private Double valor;           // Valor de la nota
+
     private Double porcentaje;      // Porcentaje de la nota
 
     public Integer getId() {

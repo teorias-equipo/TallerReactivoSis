@@ -7,10 +7,14 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @Table("profesor")
 public class Profesor {
+
     @Id
     private Integer id;
+
     private String nombre;
+
     private String apellido;
+
     private String correo;
 
     public Integer getId() {

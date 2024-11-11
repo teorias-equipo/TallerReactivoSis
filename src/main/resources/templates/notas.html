@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Notas del Estudiante</title>
+    <style>
+        /* Estilos para la tabla de notas */
+    </style>
+</head>
+<body>
+
+<h1>Notas del Estudiante <span id="nombre-estudiante"></span></h1>
+<div id="notas-container">
+    <!-- Notas cargadas dinámicamente desde el backend -->
+</div>
+<h2>Promedio Final: <span id="promedio-final"></span></h2>
+
+<script>
+    function loadGrades() {
+        const params = new URLSearchParams(window.location.search);
+        const idEstudiante = params.get('estudiante');
+        fetch(`http://localhost:8080/api/notas?estudiante=${idEstudiante}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('nombre-estudiante').textContent = data.estudianteNombre;
+                const container = document.getElementById('notas-container');
+                container.innerHTML = '';
+                let total = 0;
+                let pesoTotal = 0;
+                data.notas.forEach((nota, index) => {
+                    container.innerHTML += `
+                        <div>
+                            <label>Nota ${index + 1}:</label>
+                            <input type="text" value="${nota.valor}" disabled>
+                            <label>Porcentaje:</label>
+                            <input type="text" value="${nota.porcentaje}" disabled>
+                            <label>Observación:</label>
+                            <input type="text" value="${nota.observacion}" disabled>
+                        </div>`;
+                    total += nota.valor * (nota.porcentaje / 100);
+                    pesoTotal += nota.porcentaje;
+                });
+                const promedioFinal = pesoTotal > 0 ? (total / pesoTotal).toFixed(2) : 0;
+                document.getElementById('promedio-final').textContent = promedioFinal;
+            })
+            .catch(error => console.error('Error al cargar notas:', error));
+    }
+
+    loadGrades();
+</script>
+
+</body>
+</html>

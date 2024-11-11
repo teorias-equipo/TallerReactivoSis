@@ -2,6 +2,7 @@ package edu.javeriana.taller.Model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
@@ -11,18 +12,41 @@ import java.time.LocalDate;
 public class Curso {
 
     @Id
-    private String codigo;
-    private Integer materiaId;    // Llave foránea a MATERIA
-    private Integer profesorId;   // Llave foránea a PROFESOR
+    @Column("codigo")  // El ID del curso
+    private Integer codigo;  // Cambié a Integer
+
+    @Column("materia_id")  // Referencia a la materia del curso
+    private Integer materiaId;
+
+    @Column("profesor_id")  // Referencia al profesor del curso
+    private Integer profesorId;
+
+    @Column("fecha_inicio")  // Fecha de inicio del curso
     private LocalDate fechaInicio;
+
+    @Column("fecha_fin")  // Fecha de fin del curso
     private LocalDate fechaFin;
 
-    public String getCodigo() {
+    @Column("nombre") // Nombre del curso (de la materia asociada)
+    private String nombre;
+
+    // Getters y setters generados por Lombok
+
+
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Integer getMateriaId() {

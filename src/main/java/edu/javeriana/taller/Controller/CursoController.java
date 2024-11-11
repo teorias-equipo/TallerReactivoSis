@@ -1,13 +1,14 @@
 package edu.javeriana.taller.Controller;
 
-import edu.javeriana.taller.Model.Curso;
 import edu.javeriana.taller.Service.CursoService;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import edu.javeriana.taller.Model.Curso;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@RestController
-@RequestMapping("/api/cursos")
+@Controller
+@RequestMapping("/cursos")
 public class CursoController {
 
     private final CursoService cursoService;
@@ -17,22 +18,15 @@ public class CursoController {
     }
 
     @GetMapping
-    public Flux<Curso> getAllCursos() {
-        return cursoService.getAllCursos();
-    }
+    public String getAllCursos(Model model) {
+        // Realizamos la llamada al servicio y asignamos los cursos al modelo
+        cursoService.getAllCursos()
+                .collectList() // Convertimos el Flux a una lista
+                .doOnTerminate(() -> {
+                    // No es necesario hacer nada aquí en este caso
+                })
+                .subscribe(cursos -> model.addAttribute("cursos", cursos)); // Se asigna directamente cuando se recibe el resultado
 
-    @GetMapping("/{codigo}")
-    public Mono<Curso> getCursoById(@PathVariable String codigo) {
-        return cursoService.getCursoById(codigo);
-    }
-
-    @PostMapping
-    public Mono<Curso> createCurso(@RequestBody Curso curso) {
-        return cursoService.createCurso(curso);
-    }
-
-    @DeleteMapping("/{codigo}")
-    public Mono<Void> deleteCurso(@PathVariable String codigo) {
-        return cursoService.deleteCurso(codigo);
+        return "cursos"; // La vista que muestra la lista de cursos
     }
 }
