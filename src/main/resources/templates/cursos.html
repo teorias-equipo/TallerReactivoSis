@@ -53,10 +53,14 @@
     </thead>
     <tbody>
     <tr th:each="curso : ${cursos}">
-        <td th:text="${curso.nombre}"></td>  <!-- Mostrar nombre del curso -->
-        <td th:text="${curso.profesorId}"></td>  <!-- Suponiendo que profesorId está relacionado -->
-        <td th:text="${curso.codigo}"></td>  <!-- Mostrar código del curso -->
-        <td><!-- Agregar botones de acciones, como editar o eliminar --></td>
+        <td th:text="${curso.nombre}">Nombre del curso</td>  <!-- Mostrar nombre del curso -->
+        <td th:text="${curso.profesor != null ? curso.profesor.nombre : 'Sin Profesor'}">Profesor</td>  <!-- Mostrar nombre del profesor o 'Sin Profesor' si es null -->
+        <td th:text="${curso.codigo}">Código</td>  <!-- Mostrar código del curso -->
+        <td>
+            <a th:href="@{/cursos/{codigo}/estudiantes(codigo=${curso.codigo})}">
+                <button>Ver Estudiantes</button>
+            </a>  <!-- Agregar enlace para ver estudiantes de ese curso -->
+        </td>
     </tr>
     </tbody>
 </table>

@@ -12,26 +12,34 @@ import java.time.LocalDate;
 public class Curso {
 
     @Id
-    @Column("codigo")  // El ID del curso
-    private Integer codigo;  // Cambié a Integer
+    @Column("codigo")
+    private Integer codigo;
 
-    @Column("materia_id")  // Referencia a la materia del curso
+    @Column("materia_id")
     private Integer materiaId;
 
-    @Column("profesor_id")  // Referencia al profesor del curso
+    @Column("profesor_id")
     private Integer profesorId;
 
-    @Column("fecha_inicio")  // Fecha de inicio del curso
+    @Column("fecha_inicio")
     private LocalDate fechaInicio;
 
-    @Column("fecha_fin")  // Fecha de fin del curso
+    @Column("fecha_fin")
     private LocalDate fechaFin;
 
-    @Column("nombre") // Nombre del curso (de la materia asociada)
+    @Column("nombre")
     private String nombre;
 
-    // Getters y setters generados por Lombok
+    private Profesor profesor;
 
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
 
     public Integer getCodigo() {
         return codigo;
