@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import reactor.core.publisher.Mono;
 
 @Controller
 @RequestMapping("/cursos")
@@ -18,15 +19,19 @@ public class CursoController {
     }
 
     @GetMapping
-    public String getAllCursos(Model model) {
-        // Realizamos la llamada al servicio y asignamos los cursos al modelo
-        cursoService.getAllCursos()
-                .collectList() // Convertimos el Flux a una lista
+    public Mono<String> getAllCursos(Model model) {
+        return cursoService.getAllCursos()
+                .collectList()  // Convertimos Flux a una lista
                 .doOnTerminate(() -> {
-                    // No es necesario hacer nada aquí en este caso
+                    // Aquí no es necesario hacer nada extra en este caso
                 })
-                .subscribe(cursos -> model.addAttribute("cursos", cursos)); // Se asigna directamente cuando se recibe el resultado
-
-        return "cursos"; // La vista que muestra la lista de cursos
+                .doOnSuccess(cursos -> {
+                    if (cursos == null || cursos.isEmpty()) {
+                        model.addAttribute("message", "No se encontraron cursos.");
+                    } else {
+                        model.addAttribute("cursos", cursos);  // Se pasan los cursos al modelo
+                    }
+                })
+                .then(Mono.just("cursos"));  // Devuelve el nombre de la vista
     }
 }
