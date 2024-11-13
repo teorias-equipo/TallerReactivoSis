@@ -1,7 +1,7 @@
 package edu.javeriana.taller.Controller;
 
 import edu.javeriana.taller.Service.CursoService;
-import edu.javeriana.taller.Service.EstudianteService;  // Asegúrate de tener un servicio para obtener estudiantes
+import edu.javeriana.taller.Service.EstudianteService;
 import edu.javeriana.taller.Model.Curso;
 import edu.javeriana.taller.Model.Estudiante;
 import org.springframework.stereotype.Controller;
@@ -27,11 +27,8 @@ public class CursoController {
     public Mono<String> getAllCursos(Model model) {
         return cursoService.getAllCursos()
                 .collectList()
-                .doOnTerminate(() -> {
-                    // No es necesario hacer nada aquí
-                })
                 .doOnSuccess(cursos -> model.addAttribute("cursos", cursos)) // Asignamos los cursos al modelo
-                .then(Mono.just("cursos")) // Devuelve el nombre de la vista
+                .thenReturn("cursos") // Devuelve el nombre de la vista
                 .onErrorResume(error -> {
                     model.addAttribute("error", "Ocurrió un error al cargar los cursos.");
                     return Mono.just("error"); // Redirige a una página de error
@@ -42,11 +39,8 @@ public class CursoController {
     public Mono<String> getEstudiantes(@PathVariable Integer codigo, Model model) {
         return estudianteService.getEstudiantesPorCurso(codigo)
                 .collectList() // Convierte Flux a una lista de estudiantes
-                .doOnTerminate(() -> {
-                    // No es necesario hacer nada aquí
-                })
                 .doOnSuccess(estudiantes -> model.addAttribute("estudiantes", estudiantes)) // Asigna los estudiantes al modelo
-                .then(Mono.just("estudiantes")) // Devuelve el nombre de la vista para mostrar estudiantes
+                .thenReturn("estudiantes") // Devuelve el nombre de la vista para mostrar estudiantes
                 .onErrorResume(error -> {
                     model.addAttribute("error", "Ocurrió un error al cargar los estudiantes.");
                     return Mono.just("error"); // Redirige a una página de error
