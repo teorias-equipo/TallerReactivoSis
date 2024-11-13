@@ -2,6 +2,7 @@ package edu.javeriana.taller.Model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -9,12 +10,16 @@ import org.springframework.data.relational.core.mapping.Table;
 public class Profesor {
 
     @Id
+    @Column("id")
     private Integer id;
 
+    @Column("nombre")
     private String nombre;
 
+    @Column("apellido")
     private String apellido;
 
+    @Column("correo")
     private String correo;
 
     public Integer getId() {
